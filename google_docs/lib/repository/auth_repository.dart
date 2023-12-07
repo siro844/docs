@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:html';
 import 'package:google_docs/constants.dart';
 import 'package:google_docs/constants.dart';
@@ -12,6 +13,8 @@ final  authRepositoryProvider=Provider((ref) =>
  client: Client(),
  ),
  );
+
+ final userProivder= StateProvider<UserModel?>((ref) => null);
 
 class AuthRepository {
   final GoogleSignIn _googleSignIn;
@@ -41,8 +44,13 @@ class AuthRepository {
 
          }
          );
-
-
+         switch(res.statusCode){
+          case 200:
+          final newUser=userAcc.copyWith(
+            uid: jsonDecode(res.body)['user']['_id'],
+          );
+          break;
+         }
       }
     }
     catch(e){
