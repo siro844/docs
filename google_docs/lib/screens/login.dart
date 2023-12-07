@@ -5,8 +5,22 @@ import 'package:google_docs/repository/auth_repository.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
-  void signInwithGoogle(WidgetRef ref){
-    ref.read(authRepositoryProvider).signInWithGoogle();
+
+  void signInwithGoogle(WidgetRef ref,BuildContext context) async {
+    final sMessenger=ScaffoldMessenger.of(context);
+    
+   final errorModel=  await ref.read(authRepositoryProvider).signInWithGoogle();
+  if(errorModel.error==null){
+   ref.read(userProvider.notifier).update((state) => errorModel.data);
+  }
+  else{
+    sMessenger.showSnackBar(
+      SnackBar(
+        content: Text(errorModel.error!),
+
+    ));
+  }
+ 
   }
 
   @override
@@ -20,7 +34,7 @@ class LoginScreen extends ConsumerWidget {
           backgroundColor: white,
         ),
         onPressed: (){
-          signInwithGoogle(ref);
+          signInwithGoogle(ref,context);
         },
        icon: Image.asset("assets/google_logo.png",height: 30,width: 30,), 
        label:const Text("Sign in with Google",style: TextStyle(color: black),), ),
