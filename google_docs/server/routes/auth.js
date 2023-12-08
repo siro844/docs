@@ -2,7 +2,7 @@ const express=require('express');
 const User = require('../models/user');
 // const app=express();
 const authRouter= express.Router();
-authRouter.post("/api/signup",async (req,res)=>{
+authRouter.post('/api/signup',async (req,res)=>{
     try{
         const {name,email,profilePic} =req.body;
         //if email doesnt exist only then store the data

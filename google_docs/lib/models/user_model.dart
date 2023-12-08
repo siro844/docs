@@ -30,7 +30,7 @@ class UserModel {
       profilePic: map['profilePic'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
-      uid: map['uid'] as String,
+      uid: map['_id'] as String,
       token: map['token'] as String,
     );
   }

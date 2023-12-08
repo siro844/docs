@@ -43,7 +43,6 @@ class AuthRepository {
          body: userAcc.toJson(),
          headers: {
           'Content-Type':'application/json; charset=UTF-8',
-
          }
          );
          switch(res.statusCode){
