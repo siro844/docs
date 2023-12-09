@@ -3,7 +3,7 @@ const User = require('../models/user');
 // const app=express();
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
-const authRouter= express.Router();
+ const authRouter= express.Router();
 authRouter.post('/api/signup',async (req,res)=>{
     try{
         const {name,email,profilePic} =req.body;
