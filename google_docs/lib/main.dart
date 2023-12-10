@@ -25,11 +25,12 @@ class _MyAppState extends ConsumerState<MyApp> {
     super.initState();
     getUserData();
   }
-  void getUserData() async {
-    errorModel=  await ref.read(authRepositoryProvider).getUserData();
-  if(errorModel!=null && errorModel!.data != null){
-    ref.read(userProvider.notifier).update((state) => errorModel!.data);
-  }
+    void getUserData() async {
+    errorModel = await ref.read(authRepositoryProvider).getUserData();
+
+    if (errorModel != null && errorModel!.data != null) {
+      ref.read(userProvider.notifier).update((state) => errorModel!.data);
+    }
   }
   @override
   Widget build(BuildContext context) {

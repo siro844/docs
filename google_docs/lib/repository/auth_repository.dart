@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:html';
 import 'package:google_docs/constants.dart';
 import 'package:google_docs/models/error_model.dart';
 import 'package:google_docs/repository/local_storage_repository.dart';
@@ -37,8 +36,8 @@ class AuthRepository {
      final user = await  _googleSignIn.signIn();
       if(user!=null){
       final userAcc=UserModel(
-        profilePic:user.photoUrl! , 
-       name: user.displayName!,
+        profilePic:user.photoUrl??'' , 
+       name: user.displayName ?? '',
        email: user.email,
        uid:'',
        token: '',
