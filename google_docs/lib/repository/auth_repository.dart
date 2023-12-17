@@ -96,5 +96,10 @@ Future<ErrorModel> getUserData() async {
     }
     return error;
   }
+
+  void signOut() async{
+    await _googleSignIn.signOut();
+    _localStorageRepository.setToken('');
+  }
 }
 
