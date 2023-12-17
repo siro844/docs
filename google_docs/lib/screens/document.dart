@@ -12,6 +12,8 @@ class DocumentScreen extends ConsumerStatefulWidget {
 class _DocumentScreenState extends ConsumerState<DocumentScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+     body: Center(child: Text("This is the document screen  ${widget.id}"),),
+    );
   }
 }
