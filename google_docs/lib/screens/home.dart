@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_docs/colors.dart';
+import 'package:google_docs/common/common_widgets/loader.dart';
+import 'package:google_docs/models/document_model.dart';
+import 'package:google_docs/models/error_model.dart';
 import 'package:google_docs/repository/auth_repository.dart';
 import 'package:google_docs/repository/document_repository.dart';
 import 'package:routemaster/routemaster.dart';
@@ -32,6 +35,10 @@ void createDocument(BuildContext context ,WidgetRef ref) async{
       content: Text(errorModel.error!),));
   }
 }
+
+void navigateToDocument(BuildContext context,String documentId){
+  Routemaster.of(context).push('/document/$documentId');
+}
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -45,7 +52,45 @@ void createDocument(BuildContext context ,WidgetRef ref) async{
         ],
       ),
       body:Center(
-        child:Text( ref.watch(userProvider)!.uid),
+        child:FutureBuilder<ErrorModel?>(
+          future: ref.watch(documentRepositoryProvider)
+          .getDocuments(ref.watch(userProvider)!.token,
+          ), 
+          builder: (context,snapshot){
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return const Loader();
+              }
+              return 
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.only(top:10),
+                  width: 600,
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.data.length,
+                    itemBuilder: (context,index){
+                        DocumentModel document = snapshot.data!.data[index];
+                  
+                        return SizedBox(
+                          height: 50,
+                      child: InkWell(
+                        onTap: () {
+                            navigateToDocument(context, document.id);
+                        },
+                        child:Card(
+                          child:Center(child: 
+                          Text(document.title , style :TextStyle(
+                            fontSize: 18,
+                          )),
+                          ),
+                        ),
+                      ),
+                      
+                  );
+                  }),
+                ),
+              );
+          }
+          )
       )
     );
   }
