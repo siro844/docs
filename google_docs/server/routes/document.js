@@ -29,6 +29,19 @@ documentRouter.get('/docs/me',auth,async(req,res)=>{
     } catch(e){
         res.status(500).json({error:e.message});  
     }
+});
+
+documentRouter.post('/doc/title',auth,async (req,res)=>{
+    try{
+
+        const {id,title}=req.body;
+        const document=await Document.findByIdAndUpdate(id,{title});
+        
+    }catch(e){
+        res.status(500).json({error:e.message}); 
+    }
 })
+
+
 
 module.exports=documentRouter;

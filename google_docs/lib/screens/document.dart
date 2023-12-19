@@ -41,7 +41,7 @@ final quill.QuillController _controller=quill.QuillController.basic();
             ),
         ],
         title:Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
             Image.asset('assets/logo.png',height: 40,),
@@ -82,20 +82,33 @@ final quill.QuillController _controller=quill.QuillController.basic();
   configurations: QuillConfigurations(
     controller: _controller,
     sharedConfigurations: const QuillSharedConfigurations(
-      locale: Locale('de'),
+      locale: Locale('en'),
     ),
   ),
-  child: Column(
-    children: [
-      const QuillToolbar(),
-      Expanded(
-        child: QuillEditor.basic(
-          configurations: const QuillEditorConfigurations(
-            readOnly: false,
+  child: Center(
+    child: Column(
+      children: [
+        SizedBox(height: 10,),
+        const QuillToolbar(),
+        Expanded(
+          child: SizedBox(
+            width: 750,
+            child: Card(
+              color: Colors.white,
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: QuillEditor.basic(
+                  configurations: const QuillEditorConfigurations(
+                    readOnly: false,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-      )
-    ],
+        )
+      ],
+    ),
   ),
 )
     );
