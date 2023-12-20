@@ -3,6 +3,10 @@ import 'package:flutter_quill/flutter_quill.dart'as quill;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_docs/colors.dart';
+import 'package:google_docs/models/document_model.dart';
+import 'package:google_docs/models/error_model.dart';
+import 'package:google_docs/repository/auth_repository.dart';
+import 'package:google_docs/repository/document_repository.dart';
 class DocumentScreen extends ConsumerStatefulWidget {
   final String id;
   const DocumentScreen({
@@ -15,11 +19,34 @@ class DocumentScreen extends ConsumerStatefulWidget {
 class _DocumentScreenState extends ConsumerState<DocumentScreen> {
  TextEditingController titleContoller =TextEditingController(text: 'Untitled Document');
 final quill.QuillController _controller=quill.QuillController.basic();
+ ErrorModel? errorModel;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchDocumentData();
+  }
+  void fetchDocumentData() async{
+  errorModel=await ref.read(documentRepositoryProvider)
+  .getDocumentById(ref.read(userProvider)!.token, widget.id);
+  
+    if(errorModel!.data!=null){
+        titleContoller.text=(errorModel!.data as DocumentModel).title;
+        setState((){});
+    }
+  
+  }
  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     titleContoller.dispose();
+  }
+
+  void updateTitle(WidgetRef ref,String title){
+    ref.read(documentRepositoryProvider).updateTitle(token: ref.read(userProvider)!.token,
+     id: widget.id,
+      title: title);
   }
   @override
   Widget build(BuildContext context) {
@@ -50,6 +77,7 @@ final quill.QuillController _controller=quill.QuillController.basic();
           width: 180,
           child: TextField(
             controller: titleContoller,
+            onSubmitted: (value)=>updateTitle(ref, value),
             decoration: const InputDecoration(
               border: InputBorder.none,
               focusedBorder: OutlineInputBorder(

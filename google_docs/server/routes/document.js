@@ -36,11 +36,20 @@ documentRouter.post('/doc/title',auth,async (req,res)=>{
 
         const {id,title}=req.body;
         const document=await Document.findByIdAndUpdate(id,{title});
-        
+        res.json(document)
     }catch(e){
         res.status(500).json({error:e.message}); 
     }
 })
+
+documentRouter.get('/docs/:id',auth,async(req,res)=>{
+    try{
+        const document= await Document.find(req.params.id);
+        res.json(document);
+    } catch(e){
+        res.status(500).json({error:e.message});  
+    }
+});
 
 
 
